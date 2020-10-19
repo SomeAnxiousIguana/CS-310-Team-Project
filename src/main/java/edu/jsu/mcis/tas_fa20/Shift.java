@@ -4,34 +4,47 @@ import java.time.temporal.ChronoUnit;
 import java.time.LocalTime;
 
 public class Shift {
-    private int id;
+    private byte id;
     private LocalTime stop;
     private LocalTime start;
 	private LocalTime lunchstart;
     private LocalTime lunchstop;
-    private int lunchdeduct;
-	private int graceperiod;
-    private int dock;
     private int interval;
     private long shiftduration;
 	private long lunchduration;
+	private byte interval;
+    private byte gracePeriod;
+    private byte dock;
     private String description;
 		
     public Shift(int id, LocalTime stop, LocalTime start, LocalTime lunchstart, LocalTime lunchstop, int lunchdeduct, int graceperiod, int dock, int interval, long shiftduration, long lunchduration, String description){
         this.id = id;
-        this.start = start;
-        this.stop = stop;
+        	this.start = start;
+        	this.stop = stop;
 		this.lunchstart = lunchstart;
-        this.lunchstop = lunchstop;
-		this.lunchdeduct = lunchdeduct;
-		this.graceperiod = graceperiod;
+       		this.lunchstop = lunchstop;
+			this.lunchdeduct = lunchdeduct;
+	this.graceperiod = graceperiod;
         this.dock = dock;
         this.interval = interval;
-        this.shiftduration = shiftduration;
-        this.lunchduration = lunchduration;
-		this.description = description;
+       this.shiftduration = shiftduration;
+       this.lunchduration = lunchduration;
+			this.description = description;
     }
-    
+    public Shift (Map<String, Byte> byteParams, Map <String, LocalTime> localTimeParams, short lunchDeduct, String description) {
+        this(
+                byteParams.get("id"),
+			localTimeParams.get("start"),
+                	localTimeParams.get("stop"),
+			localTimeParams.get("lunchStart"),
+                	localTimeParams.get("lunchStop"),
+				lunchDeduct("lunchdeduct")
+		byteParams.get("gracePeriod"),
+                byteParams.get("dock"),
+                byteParams.get("interval"),
+                		description("description")
+        );
+    }
     public int getID(){
         return id;
     }
@@ -65,7 +78,6 @@ public class Shift {
 	public String getDescription(){
         return description;
     }
-	
     public void setID(int id){
         this.id = id;
     }
