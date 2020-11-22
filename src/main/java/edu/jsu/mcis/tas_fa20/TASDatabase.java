@@ -31,4 +31,30 @@ public class TASDatabase {
             System.err.println(z.toString());
         } 
     }
+	
+	public int insertPunch(Punch p)
+    {
+        try {
+            
+            query = "INSERT INTO punch (originaltimestamp,terminalid,punchtypeid,badgeid) VALUES(?, ?, FROM_UNIXTIME(?/1000), ?)";
+            pstUpdate = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            pstUpdate.setShort(1, util.UnsignedByteHandler.getAsShort(p.getTerminalID()));
+	    pstUpdate.setShort(2, util.UnsignedByteHandler.getAsShort(p.getPunchTypeID()));
+            pstUpdate.setLong(3, p.getOriginalTimeStamp());
+            pstUpdate.setString(4, p.getBadgeID());         
+            pstUpdate.execute();  
+		
+            resultSet = pstUpdate.getGeneratedKeys();       
+            if (resultSet.next()) {
+                int rs = resultSet.getInt(1);
+                return rs;               
+            }          
+            else throw new Exception(
+                    "Failed To Insert: \n" + p.printOriginalTimestamp()
+            );                    
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }       
+        return 0;        
+    }
 }
